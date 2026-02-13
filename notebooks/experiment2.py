@@ -27,7 +27,7 @@ warnings.simplefilter("ignore",UserWarning)
 warnings.filterwarnings("ignore")
 
 CONFIG={
-    "data_path":"data.csv",
+    "data_path":"notebooks/data.csv",
     "test_size":0.2,
     "mlflow_tracking_uri":"https://dagshub.com/mondolpranto83/SentimentOps.mlflow",
     "datashub_repo":"SentimentOps",
