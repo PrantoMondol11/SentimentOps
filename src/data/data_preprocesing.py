@@ -35,7 +35,7 @@ def preprocess_dataframe(df,col='text'):
 
 def main():
     try:
-        train_data=pd.read_csv("./data/raw/tarin.csv")
+        train_data=pd.read_csv("./data/raw/train.csv")
         test_data=pd.read_csv("./data/raw/test.csv")
         logging.info("Data loaded successfully.")
         logging.info("Starting data preprocessing...")
