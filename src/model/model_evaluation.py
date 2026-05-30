@@ -25,6 +25,18 @@ def load_model(model_path:str):
         logging.error(f"Error loading model from {model_path}: {e}")
         raise
 
+def save_model_info(run_id:str, model_path:str,file_path:str) -> None:
+    """Save model information and evaluation metrices to MLflow"""
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        model_info={"run_id":run_id,"model_path":model_path}
+        with open(file_path, "w") as file:
+            json.dump(model_info, file, indent=4)
+        logging.info(f"Model information saved successfully at {file_path}")
+        logging.info(f"Model information and evaluation metrices logged successfully for run ID: {run_id}")
+    except Exception as e:
+        logging.error(f"Error saving model information to MLflow for run ID {run_id}: {e}")
+        raise
 def evaluate_model(model, X_test, y_test):
     """Evaluate the model on the test data and return the accuracy"""
     try:
@@ -73,10 +85,23 @@ def main():
         
             metrices=evaluate_model(model,X_test,y_test)
             
-            for metric_name,metric_value in metrices:
+            for metric_name,metric_value in metrices.items():
                 mlflow.log_metric(metric_name,metric_value)
+                
+            if hasattr(model,"get_params"):
+                params=model.get_params()
+                
+                for param_name,param_value in params.items():
+                    mlflow.log_param(param_name,param_value)
+                    
+            mlflow.sklearn.log_model(model,"model")
+            # log the entire evaluation report as an artifact
+            
+            
+            save_model_info(run.info.run_id,"model","reports/experiment_info.json")
         
             save_evaluation_results(metrices,"./results/evaluation_results.json")
+            mlflow.log_artifact("./results/evaluation_results.json")
         except Exception as e:
             logging.error(f"Failed to complete model evaluation: {e}")
             print(f"error:{e}")
