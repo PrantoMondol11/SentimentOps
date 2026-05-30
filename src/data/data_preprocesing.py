@@ -18,8 +18,8 @@ def preprocess_dataframe(df,col='text'):
     
     def preprocess_text(text):
         text = re.sub(r'http?://\s+|www\.\S+', '', text)
-        text=''.join([word for word in text.split() if word not in stop_words])
-        text=''.join([char for char in text if not char.isdigit])
+        text=' '.join([word for word in text.split() if word not in stop_words])
+        text=''.join([char for char in text if not char.isdigit()])
         text=text.lower()
         text=re.sub('[%s]' % re.escape(string.punctuation), '', text)
         text=text.replace(':',"")
