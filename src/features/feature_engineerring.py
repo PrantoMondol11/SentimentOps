@@ -66,15 +66,15 @@ def apply_count_vectorizer(train_df:pd.DataFrame,test_df:pd.DataFrame,max_featur
     except Exception as e:
         logging.error(f"Error in applying CountVectorizer: {e}")
         raise
-def save_vectorizer(vectorizer:CountVectorizer,vectorizer_path:str) -> None:
+def save_model(model,path:str) -> None:
     """Save the CountVectorizer object to a file using pickle"""
     try:
-        os.makedirs(os.path.dirname(vectorizer_path), exist_ok=True)
-        with open(vectorizer_path, "wb") as file:
-            pickle.dump(vectorizer, file)
-        logging.info(f"CountVectorizer saved successfully at {vectorizer_path}")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "wb") as file:
+            pickle.dump(model, file)
+        logging.info(f"model saved successfully at {path}")
     except Exception as e:
-        logging.error(f"Error saving CountVectorizer: {e}")
+        logging.error(f"Error saving modelr: {e}")
         raise
     
 def save_data(train_data:pd.DataFrame,test_data:pd.DataFrame,data_path:str) -> None:
