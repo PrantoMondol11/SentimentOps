@@ -62,19 +62,24 @@ def save_evaluation_results(metrices:dict, results_path:str) -> None:
         raise
     
 def main():
-    try:
-        model=load_model("./models/logistic_regression_model.pkl")
-        test_data=load_data("./data/processed/test_bow.csv")
+    mlflow.set_experiment("My_dvc_experiment")
+    with mlflow.start_run() as run:
+        try:
+            model=load_model("./models/logistic_regression_model.pkl")
+            test_data=load_data("./data/processed/test_bow.csv")
         
-        X_test=test_data.drop("label",axis=1)
-        y_test=test_data["label"]
+            X_test=test_data.drop("label",axis=1)
+            y_test=test_data["label"]
         
-        metrices=evaluate_model(model,X_test,y_test)
+            metrices=evaluate_model(model,X_test,y_test)
+            
+            for metric_name,metric_value in metrices:
+                mlflow.log_metric(metric_name,metric_value)
         
-        save_evaluation_results(metrices,"./results/evaluation_results.json")
-    except Exception as e:
-        logging.error(f"Failed to complete model evaluation: {e}")
-        print(f"error:{e}")
+            save_evaluation_results(metrices,"./results/evaluation_results.json")
+        except Exception as e:
+            logging.error(f"Failed to complete model evaluation: {e}")
+            print(f"error:{e}")
         
 if __name__=='__main__':
     main()
