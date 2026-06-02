@@ -1,6 +1,7 @@
 import mlflow
 import dagshub
 import json
+import mlflow.sklearn
 import pickle
 from src.logger import logging
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,roc_auc_score as auc_score
@@ -94,11 +95,12 @@ def main():
                 for param_name,param_value in params.items():
                     mlflow.log_param(param_name,param_value)
                     
-            mlflow.sklearn.log_model(model,"model")
+            mlflow.sklearn.log_model(sk_model=model,
+                                     artifact_path="model")
             # log the entire evaluation report as an artifact
             
             
-            save_model_info(run.info.run_id,"model","reports/experiment_info.json")
+            save_model_info(run.info.run_id,"model","./reports/experiment_info.json")
         
             save_evaluation_results(metrices,"./results/evaluation_results.json")
             mlflow.log_artifact("./results/evaluation_results.json")
