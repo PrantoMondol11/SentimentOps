@@ -33,17 +33,12 @@ def load_model_info(file_path:str) -> dict:
 
 def register_model(model_name:str, model_info:dict)-> None:
     try:
-        model_uri = f"runs:/{model_info['run_id']}/{model_info['model_path']}"
+        model_uri =  model_info["model_uri"]
 
-        print("Run ID:", model_info['run_id'])
-        print("Model Path:", model_info['model_path'])
-        print("Model URI:", model_uri)
 
         client = mlflow.tracking.MlflowClient()
 
-        print("Artifacts in run:")
-        for a in client.list_artifacts(model_info['run_id']):
-            print(a.path)
+        print("Model URI:", model_uri)
 
         model_version = mlflow.register_model(
             model_uri=model_uri,

@@ -1,4 +1,4 @@
 {
-    "run_id": "92667eb82fdf440a808e9dad5fccb55a",
-    "model_path": "model"
+    "model_uri": "models:/m-fc4a04e3d46b4b939905cf957973afc6",
+    "model_id": "m-fc4a04e3d46b4b939905cf957973afc6"
 }

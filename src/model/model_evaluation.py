@@ -26,18 +26,26 @@ def load_model(model_path:str):
         logging.error(f"Error loading model from {model_path}: {e}")
         raise
 
-def save_model_info(run_id:str, model_path:str,file_path:str) -> None:
-    """Save model information and evaluation metrices to MLflow"""
+def save_model_info(model_uri: str, model_id: str, file_path: str) -> None:
+    """Save model information for model registration"""
     try:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        model_info={"run_id":run_id,"model_path":model_path}
+
+        model_info = {
+            "model_uri": model_uri,
+            "model_id": model_id
+        }
+
         with open(file_path, "w") as file:
             json.dump(model_info, file, indent=4)
+
         logging.info(f"Model information saved successfully at {file_path}")
-        logging.info(f"Model information and evaluation metrices logged successfully for run ID: {run_id}")
+
     except Exception as e:
-        logging.error(f"Error saving model information to MLflow for run ID {run_id}: {e}")
+        logging.error(f"Error saving model information: {e}")
         raise
+    
+    
 def evaluate_model(model, X_test, y_test):
     """Evaluate the model on the test data and return the accuracy"""
     try:
@@ -95,15 +103,19 @@ def main():
                 for param_name,param_value in params.items():
                     mlflow.log_param(param_name,param_value)
                     
-            mlflow.sklearn.log_model(sk_model=model,
+            logged_model= mlflow.sklearn.log_model(sk_model=model,
                                      artifact_path="model")
             # log the entire evaluation report as an artifact
             
             
-            save_model_info(run.info.run_id,"model","./reports/experiment_info.json")
+            save_model_info(logged_model.model_uri, logged_model.model_id, "./reports/experiment_info.json")
         
             save_evaluation_results(metrices,"./results/evaluation_results.json")
             mlflow.log_artifact("./results/evaluation_results.json")
+            
+            print("Model URI:", logged_model.model_uri)
+            print("Model ID:", logged_model.model_id)
+            print("Run ID:", run.info.run_id)
         except Exception as e:
             logging.error(f"Failed to complete model evaluation: {e}")
             print(f"error:{e}")
