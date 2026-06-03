@@ -1,4 +1,4 @@
-import numpy as np
+
 import pandas as pd
 
 pd.set_option("future.no_silent_downcasting", True)
@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 import yaml
 import logging
 from src.logger import logging
-# from src.connections import s3_connection
+from src.connections.s3_connection import s3_connection
 
 def load_params(params_path:str) -> dict:
     """Load parameters from yaml file"""
@@ -34,7 +34,7 @@ def load_data(data_url:str) -> pd.DataFrame:
             s3 = s3_connection()
             bucket_name, key = data_url.replace("s3://", "").split("/", 1)
             obj = s3.get_object(Bucket=bucket_name, Key=key)
-            df = pd.read_csv(obj['Body'])
+            df = obj
         else:
             df = pd.read_csv(data_url)
         logging.debug(f"Data loaded successfully from {data_url}")
@@ -77,9 +77,9 @@ def main():
     try:
         params=load_params(params_path="params.yaml")
         test_size=params["data_ingestion"]["test_size"]
-        df=load_data(data_url="https://raw.githubusercontent.com/vikashishere/Datasets/refs/heads/main/data.csv")
+        df=load_data(data_url="s3://dataforsentiment/IMDB.csv")
         final_df=preprocess_data(df)
-        train_data, test_data = train_test_split(final_df, test_size=0.2, random_state=42)
+        train_data, test_data = train_test_split(final_df, test_size=test_size, random_state=42)
         save_data(train_data, test_data, data_path='./data')
     except Exception as e:
         logging.error(f"Data ingestion failed: {e}")
