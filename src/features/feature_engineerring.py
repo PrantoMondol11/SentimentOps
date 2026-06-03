@@ -1,4 +1,4 @@
-import numpy as np
+
 import pandas as pd
 import os
 from sklearn.feature_extraction.text import  CountVectorizer
@@ -90,15 +90,16 @@ def save_data(train_data:pd.DataFrame,test_data:pd.DataFrame,data_path:str) -> N
 
 def main():
     try:
-        # params=load_params("./params.yaml")
+        params=load_params("./params.yaml")
+        
         train_data=load_data("./data/interim/train_preprocessed.csv")
         test_data=load_data("./data/interim/test_preprocessed.csv")
         
-        max_feature=10
+        max_feature=params["feature_engineering"]["max_features"]
         
         train_bow,test_bow,vectorizer=apply_count_vectorizer(train_data,test_data,max_feature)
         
-        save_vectorizer(vectorizer,"./models/count_vectorizer.pkl")
+        save_model(vectorizer,"./models/count_vectorizer.pkl")
         
         save_data(train_bow,test_bow,"./data/processed")
     except Exception as e:

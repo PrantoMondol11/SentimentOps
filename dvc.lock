@@ -1,0 +1,92 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python -m src.data.data_ingestion
+    deps:
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: cb0f7e8570b20cb5d8f3f8b6bb20b835
+      size: 3525
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
+    outs:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: 6de2d4c6859168c55fe433a7038f6c7c
+      size: 131134
+    - path: data/raw/train.csv
+      hash: md5
+      md5: 9e55b4fc6acb7d77977a0b48f4d7fd99
+      size: 518109
+  data_preprocessing:
+    cmd: python -m src.data.data_preprocesing
+    deps:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: 6de2d4c6859168c55fe433a7038f6c7c
+      size: 131134
+    - path: data/raw/train.csv
+      hash: md5
+      md5: 9e55b4fc6acb7d77977a0b48f4d7fd99
+      size: 518109
+    - path: src/data/data_preprocesing.py
+      hash: md5
+      md5: a12c359d2399df72c8328c7703cb8b8b
+      size: 2047
+    outs:
+    - path: data/interim/test_preprocessed.csv
+      hash: md5
+      md5: 0241a0cd061d9b72d371459f27db9b49
+      size: 86345
+    - path: data/interim/train_preprocessed.csv
+      hash: md5
+      md5: 61239a9e3af74fd0eef497d589d22051
+      size: 343200
+  feature_engineering:
+    cmd: python -m src.features.feature_engineerring
+    deps:
+    - path: data/interim/test_preprocessed.csv
+      hash: md5
+      md5: 0241a0cd061d9b72d371459f27db9b49
+      size: 86345
+    - path: data/interim/train_preprocessed.csv
+      hash: md5
+      md5: 61239a9e3af74fd0eef497d589d22051
+      size: 343200
+    - path: src/features/feature_engineerring.py
+      hash: md5
+      md5: 783e6719c0a889944d8f6706c2d9dbb9
+      size: 4097
+    params:
+      params.yaml:
+        feature_engineering.max_features: 50
+    outs:
+    - path: data/processed/test_bow.csv
+      hash: md5
+      md5: 9e191310693aa2fafccd7f4e2aa247ac
+      size: 10456
+    - path: data/processed/train_bow.csv
+      hash: md5
+      md5: e2cc3db8502e1a6d9faff00630c61c94
+      size: 41373
+    - path: models/count_vectorizer.pkl
+      hash: md5
+      md5: ce0f0b38dacd66d4493fbf59e5d130ea
+      size: 1851
+  model_building:
+    cmd: python -m src.model.model_building
+    deps:
+    - path: data/processed/train_bow.csv
+      hash: md5
+      md5: e2cc3db8502e1a6d9faff00630c61c94
+      size: 41373
+    - path: src/model/model_building.py
+      hash: md5
+      md5: 2dca17f13dd732ba3aa0bc514245a861
+      size: 1363
+    outs:
+    - path: models/logistic_regression_model.pkl
+      hash: md5
+      md5: b00724b9064c4444541f5518c413337b
+      size: 1449

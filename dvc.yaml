@@ -1,0 +1,58 @@
+stages:
+  data_ingestion:
+    cmd: python -m src.data.data_ingestion
+    deps:
+      - src/data/data_ingestion.py
+    params:
+      - data_ingestion.test_size
+    outs:
+      - data/raw/test.csv
+      - data/raw/train.csv
+  data_preprocessing:
+    cmd: python -m src.data.data_preprocesing
+    deps:
+      - src/data/data_preprocesing.py
+      - data/raw/test.csv
+      - data/raw/train.csv
+    outs:
+      - data/interim/test_preprocessed.csv
+      - data/interim/train_preprocessed.csv
+
+  feature_engineering:
+    cmd: python -m src.features.feature_engineerring
+    deps:
+      - src/features/feature_engineerring.py
+      - data/interim/test_preprocessed.csv
+      - data/interim/train_preprocessed.csv
+    params:
+      - feature_engineering.max_features
+    outs:
+      - data/processed/test_bow.csv
+      - data/processed/train_bow.csv
+      - models/count_vectorizer.pkl
+
+
+  model_building:
+    cmd: python -m src.model.model_building
+    deps:
+      - src/model/model_building.py
+      - data/processed/train_bow.csv
+    outs:
+      - models/logistic_regression_model.pkl
+
+  model_evaluation:
+    cmd: python -m src.model.model_evaluation
+    deps:
+      - src/model/model_evaluation.py
+      - models/logistic_regression_model.pkl
+      - data/processed/test_bow.csv
+      - models/count_vectorizer.pkl
+    outs:
+      - results/evaluation_results.json
+      - reports/experiment_info.json
+  
+  register_model:
+    cmd: python -m src.model.register_model
+    deps:
+      - src/model/register_model.py
+      - reports/experiment_info.json
