@@ -90,3 +90,6 @@ target/
 cred.txt
 local_s3/
 models/
+results/evaluation_results.json
+reports/experiment_info.json
+models/*.pkl
