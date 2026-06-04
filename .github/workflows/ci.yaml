@@ -32,6 +32,6 @@ jobs:
 
       - name: Run DVC pipeline
         env:
-        MLFLOW_TOKEN: ${{ secrets.MLFLOW_TOKEN }}
+          MLFLOW_TOKEN: ${{ secrets.MLFLOW_TOKEN }}
         run: |
           dvc repro
