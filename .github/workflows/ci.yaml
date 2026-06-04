@@ -1,0 +1,37 @@
+name: CI Pipeline
+on:
+  push:
+    branches: [main]
+
+jobs:
+  project_testing:
+    runs_on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run DVC pipeline
+        env:
+        MLFLOW_TOKEN: ${{ secrets.MLFLOW_TOKEN }}
+        run: |
+          dvc repro
