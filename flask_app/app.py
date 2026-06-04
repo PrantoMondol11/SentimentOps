@@ -43,9 +43,17 @@ def remove_small_sentences(df):
             df.text.iloc[i]=np.nan
             
 
-mlflow.set_tracking_uri("https://dagshub.com/mondolpranto83/SentimentOps.mlflow")
-dagshub.init(repo_owner="mondolpranto83", repo_name="SentimentOps",mlflow=True)  
+dagshub_token=os.getenv("MLFLOW_TOKEN")
+if not dagshub_token:
+    logging.warning("DAGsHub token not found in environment variables. Please set MLFLOW_TOKEN to enable DAGsHub integration.")
 
+os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
+os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
+
+dagshub_url="https://dagshub.com"
+repo_owner="PrantoMondal11"
+repo_name="SentimentOps"
+mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}")
 
 def load_model_version(model_name:str):
     """Load the trained model from the specified path."""
