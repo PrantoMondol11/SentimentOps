@@ -12,7 +12,7 @@ dagshub_token=os.getenv("MLFLOW_TOKEN")
 if not dagshub_token:
     logging.warning("DAGsHub token not found in environment variables. Please set MLFLOW_TOKEN to enable DAGsHub integration.")
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
-os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
+os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
 dagshub_url="https://dagshub.com"
 
 repo_name="SentimentOps"
