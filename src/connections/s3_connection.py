@@ -4,7 +4,12 @@ import logging
 from src.logger import logging
 from io import StringIO
 import os  
+region = os.getenv("AWS_DEFAULT_REGION")
 
+if not region:
+    raise ValueError("AWS_DEFAULT_REGION is not set")
+
+print("Using region:", region)
 class s3_connection:
     def __init__(self):
         self.s3_client = boto3.client("s3",
