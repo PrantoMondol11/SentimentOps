@@ -23,7 +23,25 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-          
+      - name: Verify AWS secrets
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          echo "Region='$AWS_DEFAULT_REGION'"
+
+          if [ -z "$AWS_ACCESS_KEY_ID" ]; then
+            echo "ACCESS_KEY_MISSING"
+          else
+            echo "ACCESS_KEY_PRESENT"
+          fi
+
+          if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
+            echo "SECRET_KEY_MISSING"
+          else
+            echo "SECRET_KEY_PRESENT"
+          fi   
 
       - name: Install dependencies
         run: |
