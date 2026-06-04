@@ -5,10 +5,6 @@ from src.logger import logging
 from io import StringIO
 import os  
 
-os.environ["AWS_ACCESS_KEY_ID"]="aws_access_key_id"
-os.environ["AWS_SECRET_ACCESS_KEY"]="aws_secret_access_key"
-os.environ["AWS_DEFAULT_REGION"]="region_name"
-
 class s3_connection:
     def __init__(self):
         self.s3_client = boto3.client("s3",
