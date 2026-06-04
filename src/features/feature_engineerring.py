@@ -80,7 +80,7 @@ def save_model(model,path:str) -> None:
 def save_data(train_data:pd.DataFrame,test_data:pd.DataFrame,data_path:str) -> None:
     """Save preprocessed data to a specified path"""
     try:
-        os.makedirs(os.path.dirname(data_path), exist_ok=True)
+        os.makedirs(data_path, exist_ok=True)
         train_data.to_csv(os.path.join(data_path,"train_bow.csv"),index=False)
         test_data.to_csv(os.path.join(data_path,"test_bow.csv"),index=False)
         logging.info(f"Preprocessed data saved successfully at {data_path}")
