@@ -53,7 +53,7 @@ os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
 dagshub_url="https://dagshub.com"
 repo_owner="PrantoMondal11"
 repo_name="SentimentOps"
-mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}")
+mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
 def load_model_version(model_name:str):
     """Load the trained model from the specified path."""
