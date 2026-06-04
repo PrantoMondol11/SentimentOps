@@ -17,7 +17,9 @@ dagshub_url="https://dagshub.com"
 
 repo_name="SentimentOps"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
+dagshub_token = os.getenv("MLFLOW_TOKEN")
 
+print("Token exists:", dagshub_token is not None)
 
 def load_model(model_path:str):
     """Load a trained model from a specified path using pickle"""
