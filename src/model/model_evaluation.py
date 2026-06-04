@@ -7,7 +7,7 @@ from src.logger import logging
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,roc_auc_score as auc_score
 import os
 from src.features.feature_engineerring import load_data
-repo_owner="PrantoMondol11"
+repo_owner="mondolpranto83"
 dagshub_token=os.getenv("MLFLOW_TOKEN")
 if not dagshub_token:
     logging.warning("DAGsHub token not found in environment variables. Please set MLFLOW_TOKEN to enable DAGsHub integration.")
