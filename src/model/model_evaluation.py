@@ -7,16 +7,16 @@ from src.logger import logging
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,roc_auc_score as auc_score
 import os
 from src.features.feature_engineerring import load_data
-
+repo_owner="PrantoMondal11"
 dagshub_token=os.getenv("MLFLOW_TOKEN")
 if not dagshub_token:
     logging.warning("DAGsHub token not found in environment variables. Please set MLFLOW_TOKEN to enable DAGsHub integration.")
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
-os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
+os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
 dagshub_url="https://dagshub.com"
-repo_owner="PrantoMondal11"
+
 repo_name="SentimentOps"
-mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}")
+mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
 
 def load_model(model_path:str):
@@ -88,7 +88,9 @@ def save_evaluation_results(metrices:dict, results_path:str) -> None:
     except Exception as e:
         logging.error(f"Error saving evaluation results to {results_path}: {e}")
         raise
-    
+
+dagshub.init(repo_owner=repo_owner, repo_name=repo_name, mlflow=True)
+
 def main():
     mlflow.set_experiment("My_dvc_experiment")
     with mlflow.start_run() as run:
