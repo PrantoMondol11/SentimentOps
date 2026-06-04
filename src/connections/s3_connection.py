@@ -10,6 +10,17 @@ if not region:
     raise ValueError("AWS_DEFAULT_REGION is not set")
 
 print("Using region:", region)
+
+aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+if not aws_access_key_id:
+    raise ValueError("AWS_ACCESS_KEY_ID is not set")
+
+aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+if not aws_secret_access_key:
+    raise ValueError("AWS_SECRET_ACCESS_KEY is not set")
+
+print("AWS credentials loaded successfully",aws_access_key_id[:4]+"****",aws_secret_access_key[:4]+"****")
+print("aws_secret_access_key_id:",aws_access_key_id)
 class s3_connection:
     def __init__(self):
         self.s3_client = boto3.client("s3",
