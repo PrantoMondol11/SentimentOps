@@ -12,12 +12,11 @@ dagshub_token=os.getenv("MLFLOW_TOKEN")
 if not dagshub_token:
     logging.warning("DAGsHub token not found in environment variables. Please set MLFLOW_TOKEN to enable DAGsHub integration.")
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
-os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
+os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
 dagshub_url="https://dagshub.com"
 
 repo_name="SentimentOps"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
-dagshub_token = os.getenv("MLFLOW_TOKEN")
 
 print("Token exists:", dagshub_token is not None)
 
@@ -91,7 +90,6 @@ def save_evaluation_results(metrices:dict, results_path:str) -> None:
         logging.error(f"Error saving evaluation results to {results_path}: {e}")
         raise
 
-dagshub.init(repo_owner=repo_owner, repo_name=repo_name, mlflow=True)
 
 def main():
     mlflow.set_experiment("My_dvc_experiment")
