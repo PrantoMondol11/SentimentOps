@@ -7,6 +7,16 @@ from src.logger import logging
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,roc_auc_score as auc_score
 import os
 from src.features.feature_engineerring import load_data
+from fastapi import FastAPI,re, requests, requests, requestsquests
+token = os.getenv("DAGSHUB_TOKEN")
+
+r = requests.get(
+    "https://dagshub.com/api/v1/user",
+    auth=("mondolpranto83", token)
+)
+
+print("Auth status:", r.status_code)
+print(r.text[:200])
 repo_owner="mondolpranto83"
 dagshub_token=os.getenv("DAGSHUB_TOKEN")
 if not dagshub_token:
