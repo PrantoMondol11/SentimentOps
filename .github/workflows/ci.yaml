@@ -65,3 +65,21 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
           dvc repro
+      - name: Run tests
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        
+        run: |
+          python -m tests.test_model
+
+      - name: Run flask app tests
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          python -m tests.test_flask_app
+
+      - name: promote model
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          python -m Scripts.promote_model
