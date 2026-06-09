@@ -44,9 +44,9 @@ def remove_small_sentences(df):
             
 
 repo_owner="mondolpranto83"
-dagshub_token=os.getenv("MLFLOW_TOKEN")
+dagshub_token=os.getenv("DAGSHUB_TOKEN")
 if not dagshub_token:
-    logging.warning("DAGsHub token not found in environment variables. Please set MLFLOW_TOKEN to enable DAGsHub integration.")
+    logging.warning("DAGsHub token not found in environment variables. Please set DAGSHUB_TOKEN to enable DAGsHub integration.")
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
 os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
 dagshub_url="https://dagshub.com"
