@@ -17,16 +17,29 @@ def promote_model(model_name):
     client = mlflow.tracking.MlflowClient()
 
     # Get candidate model
+    # Current aliases
     candidate = client.get_model_version_by_alias(
         model_name,
         "candidate"
     )
 
-    # Promote to champion
+    champion = client.get_model_version_by_alias(
+        model_name,
+        "champion"
+    )
+
+    # Promote candidate to champion
     client.set_registered_model_alias(
         name=model_name,
         alias="champion",
         version=candidate.version
+    )
+
+    # Move old champion to candidate
+    client.set_registered_model_alias(
+        name=model_name,
+        alias="candidate",
+        version=champion.version
     )
 
     print(
