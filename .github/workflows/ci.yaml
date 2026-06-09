@@ -43,7 +43,15 @@ jobs:
           else
             echo "SECRET_KEY_PRESENT"
           fi   
-
+      - name: Check token
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          if [ -n "$DAGSHUB_TOKEN" ]; then
+             echo "Token found"
+          else
+             echo "Token missing"
+           fi
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
