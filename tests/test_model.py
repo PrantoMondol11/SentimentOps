@@ -90,7 +90,8 @@ class TestModelRegistration(unittest.TestCase):
 
         input_df = pd.DataFrame(
             input_data.toarray(),
-            columns=self.vectorizer.get_feature_names_out()
+            columns=[str(i) for i in range(input_data.shape[1])]
+
         )
 
         prediction = self.model.predict(input_df)
