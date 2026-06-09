@@ -52,7 +52,13 @@ def register_model(model_name:str, model_info:dict)-> None:
 
         model_version = mlflow.register_model(
             model_uri=model_uri,
-            name=model_name
+            name=model_name,
+            
+        )
+        client.set_registered_model_alias(
+        name=model_name,
+        alias="candidate",
+        version=model_version
         )
 
         print("Registered version:", model_version.version)
