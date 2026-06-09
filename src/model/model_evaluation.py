@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
 import os
 from src.features.feature_engineerring import load_data
 import requests
-token = os.getenv("DAGSHUB_TOKEN")
+token = "0a3db6b32f80649a4cb984e28d873ac9645e1f24"
 
 r = requests.get(
     "https://dagshub.com/api/v1/user",
