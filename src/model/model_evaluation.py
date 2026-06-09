@@ -117,7 +117,7 @@ def main():
             # log the entire evaluation report as an artifact
             
             
-            save_model_info(logged_model.model_uri, logged_model.model_id=None, "./reports/experiment_info.json")
+            save_model_info(logged_model.model_uri, None, "./reports/experiment_info.json")
         
             save_evaluation_results(metrices,"./results/evaluation_results.json")
             mlflow.log_artifact("./results/evaluation_results.json")
