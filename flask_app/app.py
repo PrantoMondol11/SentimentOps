@@ -54,7 +54,6 @@ dagshub_url="https://dagshub.com"
 repo_name="SentimentOps"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
-dagshub.init(repo_owner=repo_owner, repo_name=repo_name, mlflow=True)
 def load_model_version(model_name:str):
     """Load the trained model from the specified path."""
     try:
