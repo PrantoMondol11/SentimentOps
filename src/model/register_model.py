@@ -58,7 +58,7 @@ def register_model(model_name:str, model_info:dict)-> None:
         client.set_registered_model_alias(
         name=model_name,
         alias="candidate",
-        version=model_version
+        version=model_version.version
         )
 
         print("Registered version:", model_version.version)
