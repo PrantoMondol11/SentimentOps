@@ -18,7 +18,8 @@ if not dagshub_token:
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
 os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
 dagshub_url="https://dagshub.com"
-
+print("Token exists:", dagshub_token is not None)
+print("DAGsHub URL:", dagshub_url)
 repo_name="SentimentOps"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
