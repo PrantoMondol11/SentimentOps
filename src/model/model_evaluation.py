@@ -7,7 +7,7 @@ from src.logger import logging
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,roc_auc_score as auc_score
 import os
 from src.features.feature_engineerring import load_data
-from fastapi import FastAPI,re, requests, requests, requestsquests
+import requests
 token = os.getenv("DAGSHUB_TOKEN")
 
 r = requests.get(
@@ -22,7 +22,7 @@ dagshub_token=os.getenv("DAGSHUB_TOKEN")
 if not dagshub_token:
     logging.warning("DAGsHub token not found in environment variables. Please set DAGSHUB_TOKEN to enable DAGsHub integration.")
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
-os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
+os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
 dagshub_url="https://dagshub.com"
 
 repo_name="SentimentOps"
