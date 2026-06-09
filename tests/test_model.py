@@ -15,13 +15,16 @@ from sklearn.metrics import (
 class TestModelRegistration(unittest.TestCase):
 
     @staticmethod
-    def get_latest_versions(model_name, stages):
+    def get_candidate_version(model_name):
+
         client = mlflow.tracking.MlflowClient()
-        latest_version = client.get_latest_versions(
+
+        model_version = client.get_model_version_by_alias(
             model_name,
-            stages=stages
+            "candidate"
         )
-        return latest_version
+
+        return model_version.version
 
     @classmethod
     def setUpClass(cls):
@@ -31,7 +34,9 @@ class TestModelRegistration(unittest.TestCase):
         dagshub_token = os.getenv("DAGSHUB_TOKEN")
 
         if not dagshub_token:
-            raise ValueError("DAGSHUB_TOKEN not found.")
+            raise ValueError(
+                "DAGSHUB_TOKEN not found."
+            )
 
         os.environ["MLFLOW_TRACKING_USERNAME"] = repo_owner
         os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
@@ -45,12 +50,13 @@ class TestModelRegistration(unittest.TestCase):
 
         cls.model_name = "Sentiment_Analysis_Model"
 
-        cls.version = cls.get_latest_versions(
-            cls.model_name,
-            ["Staging"]
-        )[0].version
+        cls.version = cls.get_candidate_version(
+            cls.model_name
+        )
 
-        cls.model_uri = f"models:/{cls.model_name}/{cls.version}"
+        cls.model_uri = (
+            f"models:/{cls.model_name}/{cls.version}"
+        )
 
         cls.model = mlflow.pyfunc.load_model(
             cls.model_uri
@@ -74,7 +80,9 @@ class TestModelRegistration(unittest.TestCase):
 
     def test_model_signature(self):
 
-        input_text = "This movie was fantastic! I loved it."
+        input_text = (
+            "This movie was fantastic! I loved it."
+        )
 
         input_data = self.vectorizer.transform(
             [input_text]
@@ -89,7 +97,9 @@ class TestModelRegistration(unittest.TestCase):
 
         self.assertEqual(
             input_df.shape[1],
-            len(self.vectorizer.get_feature_names_out())
+            len(
+                self.vectorizer.get_feature_names_out()
+            )
         )
 
         self.assertEqual(
@@ -113,7 +123,10 @@ class TestModelRegistration(unittest.TestCase):
 
         y_pred = self.model.predict(X_test)
 
-        accuracy = accuracy_score(y_test, y_pred)
+        accuracy = accuracy_score(
+            y_test,
+            y_pred
+        )
 
         precision = precision_score(
             y_test,
@@ -133,10 +146,25 @@ class TestModelRegistration(unittest.TestCase):
             zero_division=0
         )
 
-        self.assertGreaterEqual(accuracy, 0.4)
-        self.assertGreaterEqual(precision, 0.4)
-        self.assertGreaterEqual(recall, 0.4)
-        self.assertGreaterEqual(f1, 0.4)
+        self.assertGreaterEqual(
+            accuracy,
+            0.4
+        )
+
+        self.assertGreaterEqual(
+            precision,
+            0.4
+        )
+
+        self.assertGreaterEqual(
+            recall,
+            0.4
+        )
+
+        self.assertGreaterEqual(
+            f1,
+            0.4
+        )
 
 
 if __name__ == "__main__":
