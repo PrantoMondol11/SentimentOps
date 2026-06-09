@@ -23,8 +23,6 @@ print("DAGsHub URL:", dagshub_url)
 repo_name="SentimentOps"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
-dagshub.init(repo_owner=repo_owner, repo_name=repo_name, mlflow=True)
-
 def load_model_info(file_path:str) -> dict:
     """Load model information and evaluation metrices from a specified path"""
     try:
