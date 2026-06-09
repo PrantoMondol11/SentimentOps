@@ -8,9 +8,9 @@ from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
 import os
 from src.features.feature_engineerring import load_data
 repo_owner="mondolpranto83"
-dagshub_token=os.getenv("MLFLOW_TOKEN")
+dagshub_token=os.getenv("DAGSHUB_TOKEN")
 if not dagshub_token:
-    logging.warning("DAGsHub token not found in environment variables. Please set MLFLOW_TOKEN to enable DAGsHub integration.")
+    logging.warning("DAGsHub token not found in environment variables. Please set DAGSHUB_TOKEN to enable DAGsHub integration.")
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
 os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
 dagshub_url="https://dagshub.com"
@@ -19,6 +19,7 @@ repo_name="SentimentOps"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
 print("Token exists:", dagshub_token is not None)
+print("DAGsHub URL:", dagshub_url)
 
 def load_model(model_path:str):
     """Load a trained model from a specified path using pickle"""
