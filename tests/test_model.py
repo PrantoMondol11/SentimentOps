@@ -115,11 +115,11 @@ class TestModelRegistration(unittest.TestCase):
     def test_model_performance(self):
 
         X_test = self.holdout_data.drop(
-            "sentiment",
+            "label",
             axis=1
         )
 
-        y_test = self.holdout_data["sentiment"]
+        y_test = self.holdout_data["label"]
 
         y_pred = self.model.predict(X_test)
 
