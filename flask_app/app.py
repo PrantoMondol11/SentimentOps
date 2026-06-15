@@ -12,8 +12,6 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import string
 import re
-import dagshub
-from src.logger import logging
 
 import warnings
 
@@ -46,7 +44,7 @@ def remove_small_sentences(df):
 repo_owner="mondolpranto83"
 dagshub_token=os.getenv("DAGSHUB_TOKEN")
 if not dagshub_token:
-    logging.warning("DAGsHub token not found in environment variables. Please set DAGSHUB_TOKEN to enable DAGsHub integration.")
+    print("TOken not found")
 os.environ["MLFLOW_TRACKING_PASSWORD"]=dagshub_token
 os.environ["MLFLOW_TRACKING_USERNAME"]=repo_owner
 dagshub_url="https://dagshub.com"
@@ -60,11 +58,11 @@ def load_model_version(model_name:str):
         client = mlflow.MlflowClient()
         model_version = client.get_latest_versions(model_name,stages=["Staging"])
         if not model_version:
-            logging.error(f"No model found in Staging for {model_name}")
+            print("No model fount in candidate")
             model_version = client.get_latest_versions(model_name,stages=["None"])
         return model_version[0].version if model_version else None
     except Exception as e:
-        logging.error(f"Error loading model from {model_name}: {e}")
+        print(f"Error loading model from {model_name}: {e}")
         raise
     
 app = Flask(__name__)
@@ -110,7 +108,7 @@ def predict():
         result="Positive" if prediction[0]==1 else "Negative"
         Prediction_count.labels(result=result).inc()
     except Exception as e:
-        logging.error(f"Error during prediction: {e}")
+        print(f"Error during prediction: {e}")
         result="Error processing the review. Please try again."
     Request_latency.labels(method="POST",endpoint="/predict").observe(time.time()-start_time)
     return render_template("index.html",result=result)
