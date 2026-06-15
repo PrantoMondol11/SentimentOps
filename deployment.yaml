@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: SentimentOps
+  labels:
+    app: sentimentops
+
+spec:
+  replicas: 2
+  selector:
+    matchlabels: 
+      app: sentimentops
+  templete: 
+    metadata:
+      labels: 
+        app: sentimentops
+    spec: 
+      containers:
+        -name: sentimentops
+        image: 784608887303.dkr.ecr.us-east-1.amazonaws.com/sentimentops
+        ports:
+          -containerPort: 5000
+        resources:
+          requests:
+            memory: "250Mi"
+            cpu: "1"
+        env:
+        -name: DAGSHUB_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: capstone-secret
+            key: DAGSHUB_TOKEN
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sentimentOps-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: sentimentops
+  ports:
+    -name: http
+    protocol: TCP
+    port: 5000
+    targetPort: 5000
