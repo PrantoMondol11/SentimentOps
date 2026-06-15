@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: SentimentOps
+  name: sentimentops
   labels:
     app: sentimentops
 
@@ -31,6 +31,7 @@ spec:
                   name: capstone-secret
                   key: DAGSHUB_TOKEN
 
+---
 
 apiVersion: v1
 kind: Service
