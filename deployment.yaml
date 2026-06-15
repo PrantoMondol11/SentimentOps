@@ -35,7 +35,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sentimentOps-service
+  name: sentimentops-service
 spec:
   type: LoadBalancer
   selector:
