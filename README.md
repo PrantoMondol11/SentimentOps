@@ -263,8 +263,7 @@ Visualizes:
 ### Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-cd YOUR_REPOSITORY
+git clone [git repo link]
 ```
 
 ### Create Virtual Environment
@@ -311,13 +310,13 @@ python app.py
 Build Image:
 
 ```bash
-docker build -t capstone-app:latest .
+docker build -t sentimentops:latest .
 ```
 
 Run Container:
 
 ```bash
-docker run -p 8888:5000 capstone-app:latest
+docker run -p 8888:5000 sentimentops:latest
 ```
 
 ---
